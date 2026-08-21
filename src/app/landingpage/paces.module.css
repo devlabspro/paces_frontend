@@ -1083,6 +1083,7 @@
     color:#fff;
     font-size:12px;
     font-weight:500;
+    text-transform:uppercase;
     white-space:nowrap;
     transition:background-color .2s ease;
   }

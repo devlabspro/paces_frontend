@@ -12,6 +12,39 @@ const publicPages = [
   '/demo'
 ];
 
+const pacesExactPages = new Set([
+  '/about',
+  '/blog',
+  '/news',
+  '/reports',
+  '/case-studies',
+  '/white-papers',
+  '/power-developers',
+  '/data-center-developers',
+  '/free-modular-report',
+  '/free-modular-due-diligence-report',
+  '/paces-demo',
+  '/careers',
+  '/faq',
+  '/for-ai',
+]);
+
+const pacesPagePrefixes = [
+  '/products/',
+  '/post/',
+  '/news/',
+  '/reports/',
+  '/case-study/',
+  '/white-papers/',
+  '/webinar-',
+  '/terms-and-conditions',
+  '/privacy-policy',
+];
+
+function isPacesMirrorPage(path: string) {
+  return pacesExactPages.has(path) || pacesPagePrefixes.some((prefix) => path.startsWith(prefix));
+}
+
 
 // Add story-related paths that need ownership verification
 const storyProtectedPaths = [
@@ -24,6 +57,18 @@ const storyProtectedPaths = [
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
+
+  if (path === '/privacy') {
+    return NextResponse.redirect(new URL('/privacy-policy', request.url))
+  }
+
+  if (path === '/post/tomorrows-grid-today-paces-launches-automated-off-cycle-case-updates') {
+    return NextResponse.redirect(new URL('/blog', request.url))
+  }
+
+  if (isPacesMirrorPage(path)) {
+    return NextResponse.rewrite(new URL(`/paces-mirror${path}/index.html`, request.url))
+  }
 
   // Skip middleware for public pages and all static assets/images
   if (publicPages.includes(path) || 

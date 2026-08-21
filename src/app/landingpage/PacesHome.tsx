@@ -1,22 +1,41 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import {
   ArrowRight,
+  Blocks,
   Bot,
-  CircleDot,
-  Database,
-  Monitor,
-  PanelsTopLeft,
-  RadioTower,
-  Wrench,
-  type LucideIcon,
+  DatabaseZap,
+  PencilRuler,
+  Target,
 } from "lucide-react";
+import type { ComponentType, SVGProps } from "react";
+import contactStyles from "../contact/contact.module.css";
 import styles from "./paces.module.css";
 
 const A = "/paces-assets/";
+
+type NavIcon = ComponentType<SVGProps<SVGSVGElement>>;
+
+function SolarPanelIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M11 2h2" /><path d="m14.28 14-4.56 8" /><path d="m21 22-1.558-4H4.558" /><path d="M3 10v2" />
+      <path d="M6.245 15.04A2 2 0 0 1 8 14h12a1 1 0 0 1 .864 1.505l-3.11 5.457A2 2 0 0 1 16 22H4a1 1 0 0 1-.863-1.506z" />
+      <path d="M7 2a4 4 0 0 1-4 4" /><path d="m8.66 7.66 1.41 1.41" />
+    </svg>
+  );
+}
+
+function MonitorCloudIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M11 13a3 3 0 1 1 2.83-4H14a2 2 0 0 1 0 4z" /><path d="M12 17v4" /><path d="M8 21h8" />
+      <rect x="2" y="3" width="20" height="14" rx="2" />
+    </svg>
+  );
+}
 
 const partners = [
   "a7d48b74430ad97c.png",
@@ -47,10 +66,10 @@ const testimonials = [
 ];
 
 const footerGroups = [
-  { title: "Solutions", links: [["Power Developers", "https://www.paces.com/power-developers"], ["Data Center Developers", "https://www.paces.com/data-center-developers"]] },
-  { title: "Product", links: [["Overview", "https://www.paces.com/products/overview"], ["Software", "https://www.paces.com/products/software"], ["Reports", "https://www.paces.com/products/reports"], ["Services", "https://www.paces.com/products/services"]] },
-  { title: "Resources", links: [["Case Studies", "https://www.paces.com/case-studies"], ["Reports", "https://www.paces.com/reports"], ["Blog", "https://www.paces.com/blog"], ["Podcast", "https://www.paces.com/podcast"], ["News", "https://www.paces.com/news"], ["White Papers", "https://www.paces.com/white-papers"]] },
-  { title: "Company", links: [["About us", "https://www.paces.com/about"], ["Careers", "https://www.paces.com/careers"], ["Contact", "/contact"], ["FAQ", "https://www.paces.com/faq"], ["For AI", "https://www.paces.com/for-ai"], ["Login", "/login"]] },
+  { title: "Solutions", links: [["Power Developers", "/power-developers"], ["Data Center Developers", "/data-center-developers"]] },
+  { title: "Product", links: [["Overview", "/products/overview"], ["Software", "/products/software"], ["Reports", "/products/reports"], ["Services", "/products/services"]] },
+  { title: "Resources", links: [["Case Studies", "/case-studies"], ["Reports", "/reports"], ["Blog", "/blog"], ["Podcast", "https://podcasts.apple.com/us/podcast/build-repeat-a-paces-podcast/id1518148418"], ["News", "/news"], ["White Papers", "/white-papers"]] },
+  { title: "Company", links: [["About us", "/about"], ["Careers", "/careers"], ["Contact", "/contact"], ["FAQ", "/faq"], ["For AI", "/for-ai"], ["Login", "/login"]] },
 ];
 
 const loginUrl = "/login";
@@ -58,15 +77,15 @@ const loginUrl = "/login";
 const navMenus = [
   {
     label: "Solutions",
-    links: [["Power Developers", "https://www.paces.com/power-developers", RadioTower], ["Data Center Developers", "https://www.paces.com/data-center-developers", Database]],
+    links: [["Power Developers", "/power-developers", SolarPanelIcon], ["Data Center Developers", "/data-center-developers", DatabaseZap]],
   },
   {
     label: "Product",
-    links: [["Overview", "https://www.paces.com/products/overview", CircleDot], ["AI Agent", "https://www.paces.com/products/ai", Bot], ["Software", "https://www.paces.com/products/software", Monitor], ["Reports", "https://www.paces.com/products/reports", PanelsTopLeft], ["Services", "https://www.paces.com/products/services", Wrench]],
+    links: [["Overview", "/products/overview", Target], ["AI Agent", "/products/ai", Bot], ["Software", "/products/software", MonitorCloudIcon], ["Reports", "/products/reports", Blocks], ["Services", "/products/services", PencilRuler]],
   },
   {
     label: "Resources",
-    links: [["Case Studies", "https://www.paces.com/case-studies", ArrowRight], ["Reports", "https://www.paces.com/reports", ArrowRight], ["Blog", "https://www.paces.com/blog", ArrowRight], ["Podcast", "https://www.paces.com/podcast", ArrowRight], ["News", "https://www.paces.com/news", ArrowRight], ["White Papers", "https://www.paces.com/white-papers", ArrowRight]],
+    links: [["Case Studies", "/case-studies", ArrowRight], ["Reports", "/reports", ArrowRight], ["Blog", "/blog", ArrowRight], ["Podcast", "https://podcasts.apple.com/us/podcast/build-repeat-a-paces-podcast/id1518148418", ArrowRight], ["News", "/news", ArrowRight], ["White Papers", "/white-papers", ArrowRight]],
   },
 ] as const;
 
@@ -110,7 +129,7 @@ function ConsentCookieIcon() {
   );
 }
 
-function NavDropdown({ label, links }: { label: string; links: ReadonlyArray<readonly [string, string, LucideIcon]> }) {
+function NavDropdown({ label, links }: { label: string; links: ReadonlyArray<readonly [string, string, NavIcon]> }) {
   return (
     <details
       onMouseEnter={(event) => { event.currentTarget.open = true; }}
@@ -131,7 +150,7 @@ function NavDropdown({ label, links }: { label: string; links: ReadonlyArray<rea
       <div className={styles.navDropdownPanel}>
         {links.map(([text, href, Icon]) => (
           <a href={href} key={text}>
-            <Icon aria-hidden="true" strokeWidth={1.55} />
+            <Icon aria-hidden="true" strokeWidth={1.5} />
             <span>{text}</span>
           </a>
         ))}
@@ -150,41 +169,57 @@ function ContactModal({ onClose }: { onClose: () => void }) {
 
   useEffect(() => {
     const close = (event: KeyboardEvent) => event.key === "Escape" && onClose();
+    const previousOverflow = document.body.style.overflow;
+    const previousPaddingRight = document.body.style.paddingRight;
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+    document.body.style.overflow = "hidden";
+    if (scrollbarWidth > 0) document.body.style.paddingRight = `${scrollbarWidth}px`;
     window.addEventListener("keydown", close);
-    return () => window.removeEventListener("keydown", close);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.body.style.paddingRight = previousPaddingRight;
+      window.removeEventListener("keydown", close);
+    };
   }, [onClose]);
 
   return (
-    <div className={styles.modalBackdrop} role="presentation" onMouseDown={onClose}>
-      <div className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="contact-title" onMouseDown={(event) => event.stopPropagation()}>
-        <button className={styles.modalClose} onClick={onClose} aria-label="Close contact form">×</button>
+    <>
+      <div className={contactStyles.scrim} role="presentation" onMouseDown={onClose} />
+      <section className={contactStyles.modal} role="dialog" aria-modal="true" aria-labelledby="contact-title">
+        <button className={contactStyles.close} type="button" onClick={onClose} aria-label="Close Get in Touch form">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M18 6 6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
         {!sent ? (
-          <>
-            <p className={styles.eyebrow}>Talk to Paces</p>
-            <h2 id="contact-title">Get your projects to power faster.</h2>
-            <p>Tell us a little about your team and we&apos;ll show you how Paces can accelerate development.</p>
-            <form onSubmit={submit}>
-              <div className={styles.formRow}>
-                <label>First name<input required name="firstName" /></label>
-                <label>Last name<input required name="lastName" /></label>
-              </div>
-              <label>Work email<input required type="email" name="email" /></label>
-              <label>Company<input required name="company" /></label>
-              <button className={styles.formSubmit} type="submit">Submit <span>⇢</span></button>
-            </form>
-          </>
+          <form onSubmit={submit}>
+            <h2 id="contact-title" className={contactStyles.srOnly}>Get in Touch</h2>
+            <div className={contactStyles.twoColumns}>
+              <label>First Name<span>*</span><input name="firstName" autoComplete="given-name" required /></label>
+              <label>Last Name<span>*</span><input name="lastName" autoComplete="family-name" required /></label>
+            </div>
+            <label>Company Name<span>*</span><input name="company" autoComplete="organization" required /></label>
+            <label>Professional Email<span>*</span><input name="email" type="email" autoComplete="email" required /></label>
+            <label>Do you have projects in the United States?<span>*</span><select name="usProjects" defaultValue="" required><option value="" disabled>Please Select</option><option>Yes</option><option>No</option></select></label>
+            <label>How did you hear about us?<input name="source" /></label>
+            <div className={contactStyles.captcha}><strong>protected by reCAPTCHA</strong><span><img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="" /></span></div>
+            <button type="submit">Choose a time to talk to us <b>→</b></button>
+          </form>
         ) : (
-          <div className={styles.successMessage}>
-            <div>✓</div><h2>Thanks for reaching out.</h2><p>This frontend demo is ready for a backend form integration when you are.</p>
+          <div className={contactStyles.success} role="status">
+            <span>✓</span>
+            <h2 id="contact-title">Thanks for reaching out.</h2>
+            <p>Your information has been received. Our team will contact you to choose a time to talk.</p>
+            <button type="button" onClick={onClose}>Return to Paces <b>→</b></button>
           </div>
         )}
-      </div>
-    </div>
+      </section>
+    </>
   );
 }
 
 export default function PacesHome() {
-  const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [testimonial, setTestimonial] = useState(0);
@@ -227,11 +262,11 @@ export default function PacesHome() {
   }
 
   const currentTestimonial = testimonials[testimonial];
-  const openContact = () => router.push("/contact");
+  const openContact = () => setContactOpen(true);
 
   return (
     <div className={styles.site}>
-      <a className={styles.announcement} href="https://www.paces.com/webinar-ai-in-energy-development">
+      <a className={styles.announcement} href="/webinar-ai-in-energy-development">
         Access the webinar on demand: AI in energy development. <span>›</span>
       </a>
 
@@ -241,7 +276,7 @@ export default function PacesHome() {
         </a>
         <nav className={styles.nav} aria-label="Primary navigation">
           {navMenus.map((menu) => <NavDropdown key={menu.label} label={menu.label} links={menu.links} />)}
-          <a href="https://www.paces.com/about">About Us</a>
+          <a href="/about">About Us</a>
         </nav>
         <div className={styles.headerActions}>
           <a href={loginUrl}>Sign In</a>
@@ -252,10 +287,10 @@ export default function PacesHome() {
 
       {menuOpen ? (
         <nav className={styles.mobileNav} aria-label="Mobile navigation">
-          <a href="https://www.paces.com/power-developers" onClick={() => setMenuOpen(false)}>Solutions</a>
-          <a href="https://www.paces.com/products/overview" onClick={() => setMenuOpen(false)}>Product</a>
-          <a href="https://www.paces.com/blog" onClick={() => setMenuOpen(false)}>Resources</a>
-          <a href="https://www.paces.com/about" onClick={() => setMenuOpen(false)}>About Us</a>
+          <a href="/power-developers" onClick={() => setMenuOpen(false)}>Solutions</a>
+          <a href="/products/overview" onClick={() => setMenuOpen(false)}>Product</a>
+          <a href="/blog" onClick={() => setMenuOpen(false)}>Resources</a>
+          <a href="/about" onClick={() => setMenuOpen(false)}>About Us</a>
           <a href={loginUrl}>Sign In</a>
           <ArrowButton label="Get in Touch" onClick={() => { setMenuOpen(false); openContact(); }} />
         </nav>
@@ -321,7 +356,7 @@ export default function PacesHome() {
           </div>
           <div className={styles.comparisonFoot} data-reveal="fade">
             <p>Projects lag because of sequential, manual, and siloed workflows. Paces enables the future of renewable development with a new model. Built to automate work, enable parallel development stages, and reach power up to <strong>3× faster.</strong></p>
-            <div><ArrowButton label="Get in Touch" onClick={openContact} /><a href="https://www.paces.com/products/overview">Explore the product <span>↗</span></a></div>
+            <div><ArrowButton label="Get in Touch" onClick={openContact} /><a href="/products/overview">Explore the product <span>↗</span></a></div>
           </div>
         </section>
 
@@ -331,8 +366,8 @@ export default function PacesHome() {
             <p>Paces accelerates how power gets built by helping developers and utilities move faster, together.</p>
           </div>
           <div className={styles.audienceGrid}>
-            <article data-reveal="card"><div className={styles.audienceImage}><Image src={`${A}81059286160703c1.avif`} alt="Solar energy development" fill sizes="(max-width: 800px) 100vw, 50vw" /></div><h3>Power Developers</h3><p>Grow pipeline faster by de-risking and automating diligence to focus only on the projects most likely to succeed.</p><a href="https://www.paces.com/power-developers">Learn More <span>⇢</span></a></article>
-            <article data-reveal="card"><div className={styles.audienceImage}><Image src={`${A}1fadaa458721740b.avif`} alt="Data center campus" fill sizes="(max-width: 800px) 100vw, 50vw" /></div><h3>Data Center Developers</h3><p>Secure power faster by identifying viable sites and assessing grid and permitting constraints early.</p><a href="https://www.paces.com/data-center-developers">Learn More <span>⇢</span></a></article>
+            <article data-reveal="card"><div className={styles.audienceImage}><Image src={`${A}81059286160703c1.avif`} alt="Solar energy development" fill sizes="(max-width: 800px) 100vw, 50vw" /></div><h3>Power Developers</h3><p>Grow pipeline faster by de-risking and automating diligence to focus only on the projects most likely to succeed.</p><a href="/power-developers">Learn More <span>⇢</span></a></article>
+            <article data-reveal="card"><div className={styles.audienceImage}><Image src={`${A}1fadaa458721740b.avif`} alt="Data center campus" fill sizes="(max-width: 800px) 100vw, 50vw" /></div><h3>Data Center Developers</h3><p>Secure power faster by identifying viable sites and assessing grid and permitting constraints early.</p><a href="/data-center-developers">Learn More <span>⇢</span></a></article>
           </div>
         </section>
 
@@ -348,16 +383,16 @@ export default function PacesHome() {
 
         <section className={styles.product} id="product">
           <div className={styles.productHeading} data-reveal="fade"><h2>AI, Software and Services for speed and scale</h2><p>An AI Agent that orchestrates a unified stack of software, modular reports, and expert validated services to accelerate site viability, identify grid constraints, and unlock new scale in power development.</p></div>
-          <ProductPanel reveal title="AI Agent and Software for faster development" intro="Accelerate your project pipeline and halve the time to shovel-ready, with AI and software backed by world-class data and human expert validation." bullets={[["9f02e72d4f5fbb05.svg","AI Agent autonomously completes key workflows"],["4cd24002349508e0.svg","Find better sites and obtain site control, faster"],["b4dae62b6c32e8f8.svg","De-risk projects early and with confidence"]]} buttons={[["Explore AI Agent","https://www.paces.com/products/ai"],["Explore Software","https://www.paces.com/products/software"]]} image="4736602776b2cc1d.avif" imageAlt="Paces software interface" />
-          <ProductPanel reveal title="Expert-grade Services and Reports, built for speed" intro="Combining human expertise and AI to help energy move faster from concept to power." bullets={[["6e826cdc57e3053b.svg","Power and Permitting Reports, delivered at 5x the speed"],["b4dae62b6c32e8f8.svg","Expert-validated results you can act on with confidence"],["558584dc301f094c.svg","Scale your pipeline without scaling your headcount"]]} buttons={[["Explore Reports","https://www.paces.com/products/reports"],["Explore Services","https://www.paces.com/products/services"]]} image="fa14653ac0d2453f.avif" imageAlt="Paces expert services interface" />
+          <ProductPanel reveal title="AI Agent and Software for faster development" intro="Accelerate your project pipeline and halve the time to shovel-ready, with AI and software backed by world-class data and human expert validation." bullets={[["9f02e72d4f5fbb05.svg","AI Agent autonomously completes key workflows"],["4cd24002349508e0.svg","Find better sites and obtain site control, faster"],["b4dae62b6c32e8f8.svg","De-risk projects early and with confidence"]]} buttons={[["Explore AI Agent","/products/ai"],["Explore Software","/products/software"]]} image="4736602776b2cc1d.avif" imageAlt="Paces software interface" />
+          <ProductPanel reveal title="Expert-grade Services and Reports, built for speed" intro="Combining human expertise and AI to help energy move faster from concept to power." bullets={[["6e826cdc57e3053b.svg","Power and Permitting Reports, delivered at 5x the speed"],["b4dae62b6c32e8f8.svg","Expert-validated results you can act on with confidence"],["558584dc301f094c.svg","Scale your pipeline without scaling your headcount"]]} buttons={[["Explore Reports","/products/reports"],["Explore Services","/products/services"]]} image="fa14653ac0d2453f.avif" imageAlt="Paces expert services interface" />
         </section>
 
         <section className={styles.resources} id="resources">
-          <div className={styles.resourcesHead} data-reveal="fade"><h2>Stay up to date on all things power development</h2><a href="https://www.paces.com/blog">Read More <span>⇢</span></a></div>
+          <div className={styles.resourcesHead} data-reveal="fade"><h2>Stay up to date on all things power development</h2><a href="/blog">Read More <span>⇢</span></a></div>
           <div className={styles.resourceGrid}>
-            <ResourceCard reveal tag="Report" title="Hansford County, Texas Power Flow Study: How ERCOT can enable 1,345 MW of new load by 2030" image="8161752acbde9480.avif" href="https://www.paces.com/reports/hansford-county-texas-power-flow-study" />
-            <ResourceCard reveal tag="Blog" title="The One-Person, Billion-Dollar Power Development Company" image="aedc26130d79d83d.avif" href="https://www.paces.com/post/the-one-person-billion-dollar-power-development-company" />
-            <ResourceCard reveal tag="Case Study" title="How Demeter Land Development de-risks origination and triples success with Paces" image="82df18a11753ffd9.avif" href="https://www.paces.com/case-studies/how-demeter-land-development-de-risks-origination-and-triples-success-with-paces" />
+            <ResourceCard reveal tag="Report" title="Hansford County, Texas Power Flow Study: How ERCOT can enable 1,345 MW of new load by 2030" image="8161752acbde9480.avif" href="/reports/hansford-county-texas-power-flow-study" />
+            <ResourceCard reveal tag="Blog" title="The One-Person, Billion-Dollar Power Development Company" image="aedc26130d79d83d.avif" href="/post/the-one-person-billion-dollar-power-development-company" />
+            <ResourceCard reveal tag="Case Study" title="How Demeter Land Development de-risks origination and triples success with Paces" image="82df18a11753ffd9.avif" href="/case-study/how-demeter-land-development-de-risks-origination-and-triples-success-with-paces" />
           </div>
         </section>
 
@@ -376,7 +411,7 @@ export default function PacesHome() {
           {footerGroups.map((group) => (
             <div className={styles.footerColumn} key={group.title}>
               <h3>{group.title}</h3>
-              <div>{group.links.map(([label, href]) => <a key={label} href={href}>{label}<span>↗</span></a>)}</div>
+              <div>{group.links.map(([label, href]) => <a key={label} href={href} onClick={href === "/contact" ? (event) => { event.preventDefault(); openContact(); } : undefined}>{label}<span>↗</span></a>)}</div>
             </div>
           ))}
           <div className={styles.footerCta}>
@@ -384,7 +419,7 @@ export default function PacesHome() {
             <div><a href="https://twitter.com/paces_ai" aria-label="X">𝕏</a><i /><a href="https://www.linkedin.com/company/pacesai" aria-label="LinkedIn">in</a></div>
           </div>
         </div>
-        <div className={styles.footerBottom}><span>© Copyright 2025 Paces&nbsp;&nbsp;|&nbsp;&nbsp;All Rights Reserved</span><span><a href="https://www.paces.com/terms-and-conditions">Terms and Conditions</a><i /> <a href="https://www.paces.com/privacy-policy">Privacy Policy</a></span></div>
+        <div className={styles.footerBottom}><span>© Copyright 2025 Paces&nbsp;&nbsp;|&nbsp;&nbsp;All Rights Reserved</span><span><a href="/terms-and-conditions">Terms and Conditions</a><i /> <a href="/privacy-policy">Privacy Policy</a></span></div>
       </footer>
 
       {contactOpen ? <ContactModal onClose={() => setContactOpen(false)} /> : null}
