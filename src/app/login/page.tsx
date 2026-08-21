@@ -28,7 +28,13 @@ export default function LoginPage() {
     }
     setSubmitting(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
+      const apiUrl = process.env.NEXT_PUBLIC_PACES_API_URL || process.env.NEXT_PUBLIC_API_URL;
+      if (!apiUrl) {
+        login(email, false);
+        router.push("/parcel/map");
+        return;
+      }
+      const response = await fetch(`${apiUrl}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username: email, password, remember: remembered }),
@@ -39,12 +45,24 @@ export default function LoginPage() {
         return;
       }
       login(email, Boolean(data.is_subaccount));
-      router.push("/datasets");
+      router.push("/parcel/map");
     } catch {
       setError("We could not sign you in. Please try again.");
     } finally {
       setSubmitting(false);
     }
+  }
+
+  function openDemo() {
+    login("demo@paces.com", false);
+    router.push("/parcel/map");
+  }
+
+  function useSeedAccount() {
+    setEmail("a@gmail.com");
+    setPassword("1");
+    setVerified(true);
+    setError("");
   }
 
   return (
@@ -54,6 +72,10 @@ export default function LoginPage() {
           <Image className={styles.logo} src="/paces-assets/login-logo.jpg" alt="Paces" width={50} height={50} priority />
           <h1 id="login-title">Hi, welcome back</h1>
           <p className={styles.subtitle}>Enter your credentials to continue</p>
+          <button className={styles.seedAccount} type="button" onClick={useSeedAccount}>
+            <span><b>Seeded demo account</b><small>a@gmail.com · password 1</small></span>
+            <em>Use credentials</em>
+          </button>
           <form onSubmit={submit}>
             <label htmlFor="email">Email Address</label>
             <input id="email" name="email" type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
@@ -73,6 +95,8 @@ export default function LoginPage() {
             </label>
             {error ? <p className={styles.error} role="alert">{error}</p> : null}
             <button className={styles.submit} type="submit" disabled={submitting}>{submitting ? "Signing in…" : "Sign in"}</button>
+            <div className={styles.divider}><span>or</span></div>
+            <button className={styles.demo} type="button" onClick={openDemo}>Explore the product demo</button>
           </form>
         </section>
       </div>
