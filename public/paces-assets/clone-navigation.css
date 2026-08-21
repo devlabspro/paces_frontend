@@ -1,0 +1,15 @@
+.navbar .nav-dropdown-3.w-dropdown > .nav-dropdown-list::before {
+  content: "";
+  position: absolute;
+  top: -28px;
+  right: 0;
+  left: 0;
+  height: 28px;
+}
+
+.navbar .nav-dropdown-3.w-dropdown:hover > .nav-dropdown-list,
+.navbar .nav-dropdown-3.w-dropdown:focus-within > .nav-dropdown-list,
+.navbar .nav-dropdown-3.w-dropdown.w--open > .nav-dropdown-list {
+  display: block !important;
+}
+
