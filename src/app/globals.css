@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+  :root {
+    --radius: 0.5rem
+  }
+}
+
+html {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.025em; /* Slight negative letter spacing for headings */
+}
+
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.editor {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+[data-lexical-editor] {
+  padding: 2px 12px;
+  outline: none;
+}
+
+[data-lexical-editor] p {
+  margin: 0.8em 0;
+}
+
+/* For mobile */
+.floating-threads {
+  display: none;
+}
+
+/* For desktop */
+.anchored-threads {
+  display: block;
+  max-width: 300px;
+  width: 100%;
+  position: absolute;
+  right: 4px;
+}
+
+@media (max-width: 640px) {
+  .floating-threads {
+    display: block;
+  }
+
+  .anchored-threads {
+    display: none;
+  }
+}
+
+.placeholder {
+  position: absolute;
+  left: 12px;
+  top: 16px;
+  pointer-events: none;
+  opacity: 0.5;
+}

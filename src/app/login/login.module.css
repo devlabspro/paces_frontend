@@ -1,0 +1,22 @@
+@font-face{font-family:PacesInter;src:url('/paces-assets/Inter-Variable.ttf') format('truetype');font-weight:100 900;font-display:swap}
+.shell{height:100svh;overflow:hidden;display:flex;flex-direction:column;background:#e3f2fd;color:#0a0a0a;font-family:PacesInter,system-ui,-apple-system,"Segoe UI",sans-serif}
+.center{flex:1;display:grid;place-items:center;min-height:0}
+.card{width:400px;max-width:calc(100vw - 24px);padding:40px;background:#fff;border:1px solid rgba(32,14,124,.46);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.08);text-align:left}
+.logo{display:block;width:50px;height:50px;margin:0 auto 16px;border-radius:50%}
+.card h1{margin:0 0 8px;color:#197a6a;text-align:center;font-family:inherit;font-size:18px;font-weight:500;line-height:28px;letter-spacing:0}
+.subtitle{margin:0 0 28px;text-align:center;font-size:14px;line-height:20px}
+.card form{display:grid}
+.card form>label:not(.checkLabel):not(.captcha){margin-bottom:6px;color:#5d5d5d;font-size:14px;line-height:20px}
+.card input[type=email],.card input[type=password],.card input[type=text]{width:100%;height:48px;padding:0 12px;border:1px solid #e5e5e5;border-radius:6px;background:#fff;color:#0a0a0a;font:400 14px PacesInter,system-ui,sans-serif;outline:none}
+.card input:focus{border-color:#86d4c8;box-shadow:0 0 0 1px #86d4c8}
+.card form>input{margin-bottom:13px}
+.passwordField{position:relative;margin-bottom:13px}.passwordField input{padding-right:44px}
+.passwordField button{position:absolute;right:4px;top:4px;width:40px;height:40px;display:grid;place-items:center;border:0;background:transparent;color:#111;cursor:pointer}
+.options{height:32px;margin-bottom:13px;display:flex;align-items:center;justify-content:space-between;font-size:14px}
+.checkLabel{display:flex;align-items:center;gap:8px;cursor:pointer}.checkLabel input{appearance:none;width:16px;height:16px;margin:0;border:1px solid #b7c3c1;border-radius:4px;background:#fff;display:grid;place-items:center}.checkLabel input:checked{background:#197a6a;border-color:#197a6a}.checkLabel input:checked:after{content:"✓";color:#fff;font-size:12px;line-height:1}
+.options a{color:#155f55;text-decoration:none}
+.captcha{height:78px;margin:0 4px 16px;padding:12px 13px;display:flex;align-items:center;gap:12px;border:1px solid #d6d6d6;border-radius:2px;background:#fafafa;color:#111;font-size:14px;cursor:pointer}.captcha>input{appearance:none;width:28px;height:28px;margin:0;border:2px solid #555;background:#fff}.captcha>input:checked{background:#197a6a;border-color:#197a6a;box-shadow:inset 0 0 0 5px #fff}.recaptchaMark{margin-left:auto;display:grid;justify-items:center;color:#666}.recaptchaMark b{color:#5865c7;font-size:34px;line-height:30px}.recaptchaMark small{font-size:9px}
+.error{margin:-6px 0 8px;color:#b42318;font-size:12px;line-height:16px}
+.submit{height:48px;border:0;border-radius:6px;background:#197a6a;color:#fff;font:500 16px PacesInter,system-ui,sans-serif;cursor:pointer}.submit:hover{background:#166b5d}.submit:disabled{opacity:.65;cursor:wait}
+.shell footer{height:36px;padding:0 12px 12px;display:flex;justify-content:space-between;align-items:flex-end;font-size:14px;line-height:20px}.shell footer a{color:inherit;text-decoration:none}
+@media(max-width:480px){.card{padding:30px 24px}.shell footer{font-size:12px}.captcha{margin-left:0;margin-right:0}}
