@@ -45,13 +45,32 @@ export type PacesSettings = {
   weeklyPipelineSummary: boolean;
 };
 
+export type PacesTeamMember = {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  status: string;
+  access: string;
+};
+
+export type PacesDataSource = {
+  id: string;
+  name: string;
+  category: string;
+  sourceType: string;
+  status: string;
+  freshness: string;
+};
+
 export type PacesBootstrap = {
   projects: PacesProject[];
   savedSearches: Array<{ id: string; name: string; query: string; filters: Record<string, unknown>; updatedAt: string }>;
   reports: PacesReport[];
   agentRuns: PacesAgentRun[];
   settings: PacesSettings;
-  team: Array<{ id: string; name: string; role: string; status: string }>;
+  team: PacesTeamMember[];
+  workspaceSources: PacesDataSource[];
   dataCategories: Array<{ name: string; layers: number; freshness: string }>;
 };
 
@@ -119,4 +138,8 @@ export const pacesApi = {
     request<PacesAgentRun>("/agent/runs", { method: "POST", body: JSON.stringify({ prompt }) }),
   updateSettings: (settings: Partial<PacesSettings>) =>
     request<PacesSettings>("/settings", { method: "PATCH", body: JSON.stringify(settings) }),
+  inviteTeamMember: (member: Pick<PacesTeamMember, "name" | "email" | "role" | "access">) =>
+    request<PacesTeamMember>("/team", { method: "POST", body: JSON.stringify(member) }),
+  createDataSource: (source: Pick<PacesDataSource, "name" | "category" | "sourceType">) =>
+    request<PacesDataSource>("/data-sources", { method: "POST", body: JSON.stringify(source) }),
 };

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import "maplibre-gl/dist/maplibre-gl.css";
 import { LoginProvider } from "@/context/LoginContext";
 import { ClientOnly } from "@/components/ClientOnly";
 

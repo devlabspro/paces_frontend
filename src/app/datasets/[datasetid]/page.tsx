@@ -8,7 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Badge } from "@/components/ui/badge"
 import { Textarea } from "@/components/ui/textarea"
 import { Copy, MoreHorizontal, Plus, Upload, Search, ChevronRight, ArrowLeft, Database, Mic, Download, FileText } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import {
   Dialog,
   DialogContent,
@@ -57,7 +57,8 @@ const navigationItems = [
   },
 ]
 
-export default function DatasetDetailPage({ params }: { params: { datasetid: string } }) {
+export default function DatasetDetailPage() {
+  const params = useParams<{ datasetid: string }>()
   const [searchQuery, setSearchQuery] = useState("")
   const [dataTableItems, setDataTableItems] = useState<DataTableItem[]>([])
   const [dataset, setDataset] = useState<Dataset | null>(null)

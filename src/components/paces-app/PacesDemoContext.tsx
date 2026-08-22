@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-import { PacesAgentRun, PacesBootstrap, PacesProject, PacesReport, PacesSettings, pacesApi } from "@/lib/paces-api";
+import { PacesAgentRun, PacesBootstrap, PacesDataSource, PacesProject, PacesReport, PacesSettings, PacesTeamMember, pacesApi } from "@/lib/paces-api";
 
 type DemoContextValue = {
   data: PacesBootstrap | null;
@@ -10,11 +10,14 @@ type DemoContextValue = {
   error: string;
   refresh: () => Promise<void>;
   createProject: (project: Parameters<typeof pacesApi.createProject>[0]) => Promise<PacesProject>;
+  updateProject: (id: string, updates: Parameters<typeof pacesApi.updateProject>[1]) => Promise<PacesProject>;
   moveProject: (id: string, stage: string) => Promise<PacesProject>;
   saveSearch: (name: string, query: string, filters?: Record<string, unknown>) => Promise<void>;
   createReport: (payload: Parameters<typeof pacesApi.createReport>[0]) => Promise<PacesReport>;
   createAgentRun: (prompt: string) => Promise<PacesAgentRun>;
   saveSettings: (settings: Partial<PacesSettings>) => Promise<PacesSettings>;
+  inviteTeamMember: (member: Parameters<typeof pacesApi.inviteTeamMember>[0]) => Promise<PacesTeamMember>;
+  createDataSource: (source: Parameters<typeof pacesApi.createDataSource>[0]) => Promise<PacesDataSource>;
 };
 
 const DemoContext = createContext<DemoContextValue | null>(null);
@@ -74,11 +77,14 @@ export function PacesDemoProvider({ children }: { children: ReactNode }) {
   const value = useMemo<DemoContextValue>(() => ({
     data, loading, syncing, error, refresh,
     createProject: (project) => mutate(() => pacesApi.createProject(project), (created) => commitData((current) => ({ ...current, projects: [created, ...current.projects] }))),
+    updateProject: (id, updates) => mutate(() => pacesApi.updateProject(id, updates), (updated) => commitData((current) => ({ ...current, projects: current.projects.map((item) => item.id === id ? updated : item) }))),
     moveProject: (id, stage) => mutate(() => pacesApi.updateProject(id, { stage }), (updated) => commitData((current) => ({ ...current, projects: current.projects.map((item) => item.id === id ? updated : item) }))),
     saveSearch: (name, query, filters) => mutate(() => pacesApi.saveSearch({ name, query, filters }), (created) => commitData((current) => ({ ...current, savedSearches: [created, ...current.savedSearches] }))).then(() => undefined),
     createReport: (payload) => mutate(() => pacesApi.createReport(payload), (created) => commitData((current) => ({ ...current, reports: [created, ...current.reports] }))),
     createAgentRun: (prompt) => mutate(() => pacesApi.createAgentRun(prompt), (created) => commitData((current) => ({ ...current, agentRuns: [created, ...current.agentRuns] }))),
     saveSettings: (settings) => mutate(() => pacesApi.updateSettings(settings), (updated) => commitData((current) => ({ ...current, settings: updated }))),
+    inviteTeamMember: (member) => mutate(() => pacesApi.inviteTeamMember(member), (created) => commitData((current) => ({ ...current, team: [...current.team, created] }))),
+    createDataSource: (source) => mutate(() => pacesApi.createDataSource(source), (created) => commitData((current) => ({ ...current, workspaceSources: [created, ...(current.workspaceSources || [])] }))),
   }), [commitData, data, error, loading, mutate, refresh, syncing]);
 
   return <DemoContext.Provider value={value}>{children}</DemoContext.Provider>;
